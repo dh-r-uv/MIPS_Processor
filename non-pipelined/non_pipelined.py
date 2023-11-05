@@ -114,6 +114,9 @@ def WB():
     else:
         data_write_back = ALU["res"]    
 
+    if(Control_Sig["RegWrite"]):
+        write_into_reg(data_write_back)   
+
 #WriteBack ends
 
 
