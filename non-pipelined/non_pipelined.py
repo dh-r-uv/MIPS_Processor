@@ -12,9 +12,6 @@ from converter import *
 #Note : mem starts from 0x10000000
 # instr from 0x00400000
 
-
-
-
 #important variables
 cycle_count=0
 pc=0x00400000   #set pc, stored as int only
@@ -26,9 +23,7 @@ rd=''
 imm_val = 0
 shamt=''
 fn=''
-jump_address=''
-btarget=''
-
+jump_address=0
 
 curr_instr = ''
 #Instruction Fetch
@@ -42,12 +37,10 @@ def IF():
 #Instruction Fetch Ends
 
 #Instruction Decode
-
 def ID():
     global rs, rt, rd, op, fn, jump_address, shamt, imm_val
     op = curr_instr[0:6]
     updatecontrolUnit(op) #updating control signals
-
 
     rs=curr_instr[6:11] #readreg 1
     rt=curr_instr[11:16] #readreg 2
@@ -57,19 +50,13 @@ def ID():
     imm_val=bintodec(curr_instr[16:32]) #immediate value in lw/sw and offset in beq, note it is an integer
     jump_address=bintodec("0040"+curr_instr[6:32]+"00")   #jump address in integer format
 
-    
-
     wr_reg = rd if (Control_Sig["RegDst"]>0) else rt
     #now to update register File
     update_reg_file(rs, rt, wr_reg)
-
 #Instruction Decode ends       
 
 #Instruction Execute
-
 #note : aluc is the 3 bit alucontrol sig
-
-
 def EX():
     global pc
     updateAluControl(fn, Control_Sig["aluop"]) #updating alucontrol signals
@@ -85,11 +72,9 @@ def EX():
     #performing mux2
     if(Control_Sig["Jump"]):
         pc = jump_address
-
 #Instruction Execute ends
 #Memory Access
 rd_data_from_mem = ''
-
 def MEM():
     global rd_data_from_mem
     if(Control_Sig["MemWrite"]==1):
@@ -97,12 +82,9 @@ def MEM():
         data_to_be_written = Register_File["rd_data2"]
         data_mem["addr"] = data_to_be_written
 
-
     if(Control_Sig["MemRead"]==1):
         addr_to_read_from = ALU["res"]
         rd_data_from_mem = data_mem[addr_to_read_from]
-
-
 #Memory Access ends
 
 #WriteBack
@@ -115,7 +97,6 @@ def WB():
         data_write_back = ALU["res"]    
     if(Control_Sig["RegWrite"]):
         write_into_reg(data_write_back)
-
 #WriteBack ends
 
 def main(): #main

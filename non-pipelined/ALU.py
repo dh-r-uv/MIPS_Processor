@@ -1,10 +1,9 @@
-
 #ALU control unit
 aluc = 'xxx'
 
 def updateAluControl(fn, aluop):
     global aluc
-    if aluop=='00' or (aluop=='10' and fn=='100000'): #LW/SW add or ADD
+    if aluop=='00' or (aluop=='10' and fn=='100000'): #LW/SW add or ADD/ADDI
         aluc = '010'
     elif aluop=='01' or (aluop=='10' and fn == '100010'): #VEQ or SUB
         aluc = '110'
@@ -14,8 +13,6 @@ def updateAluControl(fn, aluop):
         aluc = '001'
     elif aluop=='10' and fn == '101010':  #slt
         aluc = '111'
-
-
 
 #ALU
 ALU = {"in1":'', "in2":'', "aluc":aluc, "zero":0, "res":''}
