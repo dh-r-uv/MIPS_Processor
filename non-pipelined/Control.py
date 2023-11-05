@@ -1,7 +1,6 @@
 from collections import OrderedDict
 import opcodes
 
-
 def bintodec(bin):  #converting binary to int
     return int(bin, 2)
 #Control signals
@@ -66,10 +65,21 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["aluop"] = '01'
         Control_Sig["Jump"] = 0
     #removed set less than
+
+    elif op == opcodes.ADDI:
+        Control_Sig["RegDst"] = 0
+        Control_Sig["ALUSrc"] = 1
+        Control_Sig["MemtoReg"] = 0
+        Control_Sig["RegWrite"] = 1
+        Control_Sig["MemRead"] = 0
+        Control_Sig["MemWrite"] = 0
+        Control_Sig["Branch"] = 0
+        Control_Sig["aluop"] = '00'
+        Control_Sig["Jump"] = 0
+
     elif op == opcodes.J:
         #Control_Sig["PCSrc"] = 1
         Control_Sig["RegWrite"] = 0
         Control_Sig["MemRead"] = 0
         Control_Sig["MemWrite"] = 0
-        Control_Sig["Branch"] = 0
         Control_Sig["Jump"] = 1
