@@ -15,8 +15,8 @@ def update_reg_file(rs, rt, wr_reg):
     Register_File["rd_data2"] = regmem[rt]
 
 
-def update_wr_data(wr_data):
-    Register_File["wr_data"] = wr_data   
+     
 
-def write_into_reg():
-    regmem[Register_File["wr_reg"]] = Register_File["wr_reg"]  
+def write_into_reg(wr_data):
+    Register_File["wr_data"] = wr_data 
+    regmem[Register_File["wr_reg"]] = Register_File["wr_data"]  
