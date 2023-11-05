@@ -98,10 +98,7 @@ def WB():
 
     if(Control_Sig["RegWrite"]):
         write_into_reg(data_write_back)
-
-
-    if(Control_Sig["RegWrite"]):
-        write_into_reg(data_write_back)   
+ 
 #WriteBack ends
 
 def main(): #main
