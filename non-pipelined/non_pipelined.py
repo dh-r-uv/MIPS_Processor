@@ -113,6 +113,8 @@ def WB():
         data_write_back = rd_data_from_mem
     else:
         data_write_back = ALU["res"]    
+    if(Control_Sig["RegWrite"]):
+        write_into_reg(data_write_back)
 
 #WriteBack ends
 
