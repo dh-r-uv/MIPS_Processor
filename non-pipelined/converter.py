@@ -12,3 +12,7 @@ def hextobin(hex):
     if(len(bin_str)<32):    #sign extend to 32 bits
             bin_str = '0' *(32-len(bin_str)) + bin_str
     return bin_str
+
+def dectohex(dec):
+    val = hex(dec)
+    extended_val = val[:2] + '0'*(8-(len(val)-2)) + val[2:]
