@@ -12,15 +12,22 @@ from converter import *
 #important variables
 cycle_count=0
 pc=0x00400000   #set pc, stored as int only
-
-op=''
-rs=''
-rt=''
-rd=''
-imm_val = 0
-shamt=''
-fn=''
-jump_address=0
+decoded = {"op" : '',
+"rs" : '',
+"rt" : '',
+"rd" : '',
+"imm_val" : 0,
+"shamt" : '',
+"fn" : '',
+"jump_address" : 0} 
+# op=''
+# rs=''
+# rt=''
+# rd=''
+# imm_val = 0
+# shamt=''
+# fn=''
+# jump_address=0
 
 curr_instr = ''
 #Instruction Fetch
@@ -33,7 +40,6 @@ def IF():
 
 #Instruction Decode
 def ID():
-    global rs, rt, rd, op, fn, jump_address, shamt, imm_val
     op = curr_instr[0:6]
     updatecontrolUnit(op) #updating control signals
 
@@ -104,23 +110,41 @@ def Create_Instr_set():
         instr_mem[strt_add] = '0x'+line.rstrip('\n')
         strt_add+=4
 
+def pipelined_mips():
+        while(True):
+            if(pc not in instr_mem.keys()):
+                break
+            IF()
+            ID()
+            EX()
+            MEM()
+            WB()
+            print(f'Running inst at address : {pc} and clockcyle count: {cycle_count}')
+            print("Data Memory is:")
+            print(data_mem)
+            print("Register Memory is:")
+            for key in regmem.keys():
+                print(f'{regmem_name[key]} : {regmem[key]}') 
+
 def main(): #main
     Create_Instr_set()
     print(instr_mem)
-    while(True):
-        if(pc not in instr_mem.keys()):
-            break
-        IF()
-        ID()
-        EX()
-        MEM()
-        WB()
-        print(f'Running inst at address : {pc} and clockcyle count: {cycle_count}')
-        print("Data Memory is:")
-        print(data_mem)
-        print("Register Memory is:")
-        for key in regmem.keys():
-            print(f'{regmem_name[key]} : {regmem[key]}')   
+
+    pipelined_mips()
+    # while(True):
+    #     if(pc not in instr_mem.keys()):
+    #         break
+    #     IF()
+    #     ID()
+    #     EX()
+    #     MEM()
+    #     WB()
+    #     print(f'Running inst at address : {pc} and clockcyle count: {cycle_count}')
+    #     print("Data Memory is:")
+    #     print(data_mem)
+    #     print("Register Memory is:")
+    #     for key in regmem.keys():
+    #         print(f'{regmem_name[key]} : {regmem[key]}')   
 
 if __name__ == "__main__":
     main()
