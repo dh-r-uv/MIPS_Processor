@@ -100,17 +100,35 @@ def WB():
         write_into_reg(data_write_back)
 #WriteBack ends
 
+#
+def Create_Instr_set():
+    global num_lines, strt_add
+    strt_add = pc
+    in_file=open("input.txt","r")
+    instr_list = in_file.readlines()
+    num_lines = len(instr_list)
+    for line in instr_list:
+        instr_mem[strt_add] = '0x'+line.rstrip('\n')
+        strt_add+=4
+#
+
 def main(): #main
-    while(pc<=0x0040001c):
-        print("run")
+    Create_Instr_set()
+    print(instr_mem)
+    while(True):
+        if(pc not in instr_mem.keys()):
+            break
         IF()
         ID()
         EX()
         MEM()
         WB()
-        
-    print(data_mem[0]) 
-    print(data_mem[4])   
+        print(f'Running inst at address : {pc} and clockcyle count: {cycle_count}')
+        print("Data Memory is:")
+        print(data_mem)
+        print("Register Memory is:")
+        for key in regmem.keys():
+            print(f'{regmem_name[key]} : {regmem[key]}')   
 
 if __name__ == "__main__":
     main()
