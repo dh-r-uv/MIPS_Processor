@@ -48,7 +48,7 @@ def ID():
     shamt=curr_instr[21:26]
     fn=curr_instr[26:32]
     imm_val=bintodec(curr_instr[16:32]) #immediate value in lw/sw and offset in beq, note it is an integer
-    jump_address=bintodec("0040"+curr_instr[6:32]+"00")   #jump address in integer format
+    jump_address=bintodec("0000"+curr_instr[6:32]+"00")   #jump address in integer format
 
     wr_reg = rd if (Control_Sig["RegDst"]>0) else rt
     #now to update register File
@@ -68,19 +68,20 @@ def EX():
     #performing mux1
     if(Control_Sig["Branch"] and ALU["zero"]):
         pc += 4*imm_val
-
     #performing mux2
     if(Control_Sig["Jump"]):
         pc = jump_address
 #Instruction Execute ends
+
 #Memory Access
 rd_data_from_mem = ''
 def MEM():
     global rd_data_from_mem
+    print(Control_Sig["MemWrite"], op)
     if(Control_Sig["MemWrite"]==1):
         addr = ALU["res"]
         data_to_be_written = Register_File["rd_data2"]
-        data_mem["addr"] = data_to_be_written
+        data_mem[addr] = data_to_be_written
 
     if(Control_Sig["MemRead"]==1):
         addr_to_read_from = ALU["res"]
@@ -98,11 +99,16 @@ def WB():
 
     if(Control_Sig["RegWrite"]):
         write_into_reg(data_write_back)
- 
 #WriteBack ends
 
 def main(): #main
-    pass
+    for i in range(4):
+        IF()
+        ID()
+        EX()
+        MEM()
+        WB()
+    print(data_mem[0])    
 
 if __name__ == "__main__":
     main()
