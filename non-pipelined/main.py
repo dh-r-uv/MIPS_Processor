@@ -7,10 +7,7 @@ from ALU import *
 from Register_File import *
 from converter import *
 
-#ALU Control Signals
-
-#Note : mem starts from 0x10000000
-# instr from 0x00400000
+##implemented only the instructions available in opcodes
 
 #important variables
 cycle_count=0
@@ -27,13 +24,11 @@ jump_address=0
 
 curr_instr = ''
 #Instruction Fetch
-
 def IF():
     global curr_instr, pc, cycle_count
     cycle_count+=1
     curr_instr = hextobin(instr_mem[pc])
     pc+=4
-
 #Instruction Fetch Ends
 
 #Instruction Decode
@@ -56,7 +51,6 @@ def ID():
 #Instruction Decode ends       
 
 #Instruction Execute
-#note : aluc is the 3 bit alucontrol sig
 def EX():
     global pc
     updateAluControl(fn, Control_Sig["aluop"]) #updating alucontrol signals
@@ -100,17 +94,15 @@ def WB():
         write_into_reg(data_write_back)
 #WriteBack ends
 
-#
 def Create_Instr_set():
     global num_lines, strt_add
     strt_add = pc
-    in_file=open("input.txt","r")
+    in_file=open("input_2.txt","r")
     instr_list = in_file.readlines()
     num_lines = len(instr_list)
     for line in instr_list:
         instr_mem[strt_add] = '0x'+line.rstrip('\n')
         strt_add+=4
-#
 
 def main(): #main
     Create_Instr_set()

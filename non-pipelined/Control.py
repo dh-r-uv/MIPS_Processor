@@ -19,8 +19,7 @@ Control_Sig = {"PCSrc" : 0,
 
 def updatecontrolUnit(op):    #updating control unit
 
-    if op == opcodes.RFORMAT:
-        #Control_Sig["PCSrc"] = 0
+    if op == opcodes.RFORMAT or op == opcodes.MUL:  
         Control_Sig["RegDst"] = 1
         Control_Sig["ALUSrc"] = 0
         Control_Sig["MemtoReg"] = 0
@@ -32,7 +31,6 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
         
     elif op == opcodes.LW:
-        #Control_Sig["PCSrc"] = 0
         Control_Sig["RegDst"] = 0
         Control_Sig["ALUSrc"] = 1
         Control_Sig["MemtoReg"] = 1
@@ -44,7 +42,6 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
 
     elif op == opcodes.SW:
-        #Control_Sig["PCSrc"] = 0
 
         Control_Sig["ALUSrc"] = 1
 
@@ -56,7 +53,6 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
 
     elif op == opcodes.BEQ:
-        #Control_Sig["PCSrc"] = 1
         Control_Sig["ALUSrc"] = 0
         Control_Sig["RegWrite"] = 0
         Control_Sig["MemRead"] = 0
@@ -64,7 +60,6 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Branch"] = 1
         Control_Sig["aluop"] = '01'
         Control_Sig["Jump"] = 0
-    #removed set less than
 
     elif op == opcodes.ADDI:
         Control_Sig["RegDst"] = 0
@@ -78,7 +73,6 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
 
     elif op == opcodes.J:
-        #Control_Sig["PCSrc"] = 1
         Control_Sig["RegWrite"] = 0
         Control_Sig["MemRead"] = 0
         Control_Sig["MemWrite"] = 0
