@@ -77,7 +77,6 @@ def EX():
 rd_data_from_mem = ''
 def MEM():
     global rd_data_from_mem
-    print(Control_Sig["MemWrite"], op)
     if(Control_Sig["MemWrite"]==1):
         addr = ALU["res"]
         data_to_be_written = Register_File["rd_data2"]
@@ -102,13 +101,16 @@ def WB():
 #WriteBack ends
 
 def main(): #main
-    for i in range(4):
+    while(pc<=0x0040001c):
+        print("run")
         IF()
         ID()
         EX()
         MEM()
         WB()
-    print(data_mem[0])    
+        
+    print(data_mem[0]) 
+    print(data_mem[4])   
 
 if __name__ == "__main__":
     main()
