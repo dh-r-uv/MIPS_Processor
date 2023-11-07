@@ -27,7 +27,7 @@ curr_instr = ''
 def IF():
     global curr_instr, pc, cycle_count
     cycle_count+=1
-    curr_instr = hextobin(instr_mem[pc])
+    curr_instr = hextobin(instr_mem[pc], 32)
     pc+=4
 #Instruction Fetch Ends
 
@@ -42,8 +42,8 @@ def ID():
     rd=curr_instr[16:21]
     shamt=curr_instr[21:26]
     fn=curr_instr[26:32]
-    imm_val=bintodec(curr_instr[16:32]) #immediate value in lw/sw and offset in beq, note it is an integer
-    jump_address=bintodec("0000"+curr_instr[6:32]+"00")   #jump address in integer format
+    imm_val=bintodec(curr_instr[16:32], 16) #immediate value in lw/sw and offset in beq, note it is an integer
+    jump_address=bintodec("0000"+curr_instr[6:32]+"00", 32)   #jump address in integer format
 
     wr_reg = rd if (Control_Sig["RegDst"]>0) else rt
     #now to update register File
@@ -62,6 +62,7 @@ def EX():
     #performing mux1
     if(Control_Sig["Branch"] and ALU["zero"]):
         pc += 4*imm_val
+        print(imm_val)
     #performing mux2
     if(Control_Sig["Jump"]):
         pc = jump_address
@@ -97,7 +98,7 @@ def WB():
 def Create_Instr_set():
     global num_lines, strt_add
     strt_add = pc
-    in_file=open("Factorial.txt","r")
+    in_file=open("sorting.txt","r")
     instr_list = in_file.readlines()
     num_lines = len(instr_list)
     for line in instr_list:
