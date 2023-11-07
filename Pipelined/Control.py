@@ -1,10 +1,8 @@
 from collections import OrderedDict
 import opcodes
 
-#Control signals
-Control_Sig = OrderedDict()
-Control_Sig = {"PCSrc" : 0, 
-    "RegDst" : 0,
+def updatecontrolUnit(op):    #updating control unit
+    Control_Sig = {"RegDst" : 0,
     "Jump" : 0,
     "Branch" : 0,
     "MemRead" : 0,
@@ -14,9 +12,7 @@ Control_Sig = {"PCSrc" : 0,
     "ALUSrc": 0,
     "RegWrite" : 0,
     "Zero" : 0}
-
-def updatecontrolUnit(op):    #updating control unit
-
+    
     if op == opcodes.RFORMAT or op == opcodes.MUL:  
         Control_Sig["RegDst"] = 1
         Control_Sig["ALUSrc"] = 0
@@ -75,3 +71,5 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["MemRead"] = 0
         Control_Sig["MemWrite"] = 0
         Control_Sig["Jump"] = 1
+
+    return Control_Sig

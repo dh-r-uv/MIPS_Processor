@@ -1,8 +1,8 @@
 #ALU control unit
-aluc = 'xxx'
 
-def updateAluControl(fn, aluop, ALU):
-    global aluc
+
+def updateAluControl(fn, aluop):
+    aluc = 'xxx'
     if aluop=='00' or (aluop=='10' and fn=='100000'): #LW/SW add or ADD/ADDI
         aluc = '010'
     elif aluop=='01' or (aluop=='10' and fn == '100010'): #BEQ or SUB
@@ -15,28 +15,27 @@ def updateAluControl(fn, aluop, ALU):
         aluc = '001'
     elif aluop=='10' and fn == '101010':  #slt
         aluc = '111'
+    return aluc    
 
 
-#ALU
-ALU = {"in1":'', "in2":'', "aluc":aluc, "zero":0, "res":''}
-
-def performALU(in1, in2):
-    ALU["in1"] = in1
-    ALU["in2"] = in2
+def performALU(in1, in2, aluc):
     if aluc == '010':  # addi, lw, sw #add
-        ALU["res"] = in1 + in2
+        alu_res = in1 + in2
     elif aluc == '110':  # beq, bne #sub
-        ALU["res"] = in1 - in2
+        alu_res = in1 - in2
     elif aluc == '011':  #MUL   
-        ALU["res"] = in1 * in2 
+        alu_res = in1 * in2 
     elif aluc == '000':  # and
-        ALU["res"] = in1 & in2
+        alu_res = in1 & in2
     elif aluc == '001':  # or
-        ALU["res"] = in1 | in2
+        alu_res = in1 | in2
     elif aluc == '111':  # slt
-        ALU["res"] = int(in1 < in2)    
+        alu_res = int(in1 < in2)    
 
-    if ALU["res"] == 0:   
-        ALU["zero"] = 1   
+    if alu_res == 0:   
+        zero = 1   
     else:
-        ALU["zero"] = 0   
+        zero = 0  
+
+    return alu_res, zero    
+
