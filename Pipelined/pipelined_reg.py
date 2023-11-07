@@ -11,11 +11,11 @@ IFID = {"pc": '', "curr_instr" : ''}
 
 
 IDEX = {"pc" : '', "Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0},
-         "rd_data1" : 0, "rd_data2" : 0, "imm_val" : 0, "fn" : '', "rd" : '', "rt" : 0}
+         "rd_data1" : 0, "rd_data2" : 0, "imm_val" : 0, "fn" : '', "rd" : '', "rt" : 0, "jump_address":0}
 
 
 EXMEM = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
-         "pc" : 0, "zero" : 0, "ALU_res" : 0, "rd_data2" : 0, "reg_write_data" : 0}
+         "pc" : 0, "zero" : 0, "ALU_res" : 0, "rd_data2" : 0, "reg_write_data" : 0, "jump_address":0}
 
 
 MEMWB = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
@@ -25,7 +25,7 @@ def updateIFID(pc, curr_instr):
     IFID["pc"] = pc
     IFID["curr_instr"] = curr_instr
 
-def updateIDEX(Control_Sig, pc, rd_data1, rd_data2, imm_val, rt, rd, fn):
+def updateIDEX(Control_Sig, pc, rd_data1, rd_data2, imm_val, rt, rd, fn, jump_address):
     IDEX["Control_Sig"] = Control_Sig
     IDEX["pc"] = pc
     IDEX["rd_data1"] = rd_data1
@@ -34,13 +34,22 @@ def updateIDEX(Control_Sig, pc, rd_data1, rd_data2, imm_val, rt, rd, fn):
     IDEX["rt"] = rt
     IDEX["rd"] = rd
     IDEX["fn"] = fn
+    IDEX["jump_address"] = jump_address
 
-def updateEXMEM():
-    pass
+def updateEXMEM(Control_Sig, pc, zero, alu_res, rd_data2, reg_write_data, jump_address):
+    EXMEM["Control_Sig"] = Control_Sig
+    EXMEM["pc"] = pc
+    EXMEM["zero"] = zero
+    EXMEM["ALU_res"] = alu_res
+    EXMEM["rd_data2"] = rd_data2
+    EXMEM["reg_write_data"] = reg_write_data
+    EXMEM["jump_address"] = jump_address
 
-def updateMEMWB():
-    pass
-
+def updateMEMWB(Control_Sig, reg_write_data, alu_res, rd_data_from_mem):
+    MEMWB["Control_Sig"] = Control_Sig
+    MEMWB["reg_write_data"] = reg_write_data
+    MEMWB["ALU_res"] = alu_res
+    MEMWB["mem_rd_data"] = rd_data_from_mem
 
 
 
