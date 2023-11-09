@@ -62,7 +62,6 @@ def EX():
     #performing mux1
     if(Control_Sig["Branch"] and ALU["zero"]):
         pc += 4*imm_val
-        print(imm_val)
     #performing mux2
     if(Control_Sig["Jump"]):
         pc = jump_address
@@ -120,8 +119,8 @@ def main(): #main
         print("Data Memory is:")
         print(data_mem)
         print("Register Memory is:")
-        for key in regmem.keys():
-            print(f'{regmem_name[key]} : {regmem[key]}')   
+        # for key in regmem.keys():
+        #     print(f'{regmem_name[key]} : {regmem[key]}')   
 
 if __name__ == "__main__":
     main()
