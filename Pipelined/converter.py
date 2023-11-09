@@ -16,3 +16,4 @@ def hextobin(hex, n):
 def dectohex(dec):
     val = hex(dec)
     extended_val = val[:2] + '0'*(8-(len(val)-2)) + val[2:]
+    return extended_val

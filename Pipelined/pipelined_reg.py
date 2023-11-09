@@ -9,154 +9,80 @@ import opcodes
 
 IFID = {"pc": '', "curr_instr" : ''}
 
-
 IDEX = {"pc" : '', "Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0},
-         "rd_data1" : 0, "rd_data2" : 0, "imm_val" : 0, "fn" : '', "rd" : '', "rt" : 0, "jump_address":0}
-
+         "rd_data1" : 0, "rd_data2" : 0, "imm_val" : 0, "fn" : '', "rs" : '', "rd" : '', "rt" : 0, "jump_address":0}
 
 EXMEM = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
-         "pc" : 0, "zero" : 0, "ALU_res" : 0, "rd_data2" : 0, "reg_write_data" : 0, "jump_address":0}
-
+         "pc" : 0, "zero" : 0, "ALU_res" : 0, "rd_data2" : 0, "reg_write_data" : '', "jump_address":0}
 
 MEMWB = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
-         "reg_write_data":0, "ALU_res":0, "mem_rd_data":''}
+         "reg_write_data":'', "ALU_res":0, "mem_rd_data":''}
 
-def updateIFID(pc, curr_instr):
-    IFID["pc"] = pc
-    IFID["curr_instr"] = curr_instr
-
-def updateIDEX(Control_Sig, pc, rd_data1, rd_data2, imm_val, rt, rd, fn, jump_address):
-    IDEX["Control_Sig"] = Control_Sig
-    IDEX["pc"] = pc
-    IDEX["rd_data1"] = rd_data1
-    IDEX["rd_data2"] = rd_data2
-    IDEX["imm_val"] = imm_val
-    IDEX["rt"] = rt
-    IDEX["rd"] = rd
-    IDEX["fn"] = fn
-    IDEX["jump_address"] = jump_address
-
-def updateEXMEM(Control_Sig, pc, zero, alu_res, rd_data2, reg_write_data, jump_address):
-    EXMEM["Control_Sig"] = Control_Sig
-    EXMEM["pc"] = pc
-    EXMEM["zero"] = zero
-    EXMEM["ALU_res"] = alu_res
-    EXMEM["rd_data2"] = rd_data2
-    EXMEM["reg_write_data"] = reg_write_data
-    EXMEM["jump_address"] = jump_address
-
-def updateMEMWB(Control_Sig, reg_write_data, alu_res, rd_data_from_mem):
-    MEMWB["Control_Sig"] = Control_Sig
-    MEMWB["reg_write_data"] = reg_write_data
-    MEMWB["ALU_res"] = alu_res
-    MEMWB["mem_rd_data"] = rd_data_from_mem
+def updateIFID(reg):
+    IFID["pc"] = reg[0]
+    IFID["curr_instr"] = reg[1]
 
 
+def updateIDEX(reg):
+    IDEX["Control_Sig"] = reg[0]
+    IDEX["pc"] = reg[1]
+    IDEX["rd_data1"] = reg[2]
+    IDEX["rd_data2"] = reg[3]
+    IDEX["imm_val"] = reg[4]
+    IDEX["rs"] = reg[5]
+    IDEX["rt"] = reg[6]
+    IDEX["rd"] = reg[7]
+    IDEX["fn"] = reg[8]
+    IDEX["jump_address"] = reg[9]
+
+def updateEXMEM(reg):
+    EXMEM["Control_Sig"] = reg[0]
+    EXMEM["pc"] = reg[1]
+    EXMEM["zero"] = reg[2]
+    EXMEM["ALU_res"] = reg[3]
+    EXMEM["rd_data2"] = reg[4]
+    EXMEM["reg_write_data"] = reg[5]
+    EXMEM["jump_address"] = reg[6]
+
+def updateMEMWB(reg):
+    MEMWB["Control_Sig"] = reg[0]
+    MEMWB["reg_write_data"] = reg[1]
+    MEMWB["ALU_res"] = reg[2]
+    MEMWB["mem_rd_data"] = reg[3]
 
 
+def update_pipelined(Reg_update):
+    if(0 in Reg_update.keys()):
+        updateIFID(Reg_update[0])
+    if(1 in Reg_update.keys()):
+        updateIDEX(Reg_update[1])    
+    if(2 in Reg_update.keys()):
+        updateEXMEM(Reg_update[2])
+    if(3 in Reg_update.keys()):
+        updateMEMWB(Reg_update[3])
 
 
+def flushIFID():
+    IFID["pc"] = ''
+    IFID["curr_instr"] = ''
 
+def flushIDEX():
+    IDEX["Control_Sig"] = {"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
+    IDEX["pc"] = 0
+    IDEX["rd_data1"] = 0
+    IDEX["rd_data2"] = 0
+    IDEX["imm_val"] = 0
+    IDEX["rs"] = ''
+    IDEX["rt"] = ''
+    IDEX["rd"] = ''
+    IDEX["fn"] = ''
+    IDEX["jump_address"] = 0
 
-
-
-# class pipelined_reg:
-    
-#     def __init__(self):
-#         self.Control_Sig = {"PCSrc" : 0, 
-#             "RegDst" : 0,
-#             "Jump" : 0,
-#             "Branch" : 0,
-#             "MemRead" : 0,
-#             "MemtoReg" : 0,
-#             "aluop" : '00', 
-#             "MemWrite" : 0,
-#             "ALUSrc": 0,
-#             "RegWrite" : 0,
-#             "Zero" : 0}
-#         self.decoded = {"op" : '',
-#             "rs" : '',
-#             "rt" : '',
-#             "rd" : '',
-#             "imm_val" : 0,
-#             "shamt" : '',
-#             "fn" : '',
-#             "jump_address" : 0} 
-#         self.ref_file ={"rd_reg1": '',
-#             "rd_reg2" : '', 
-#             "wr_reg" : '', 
-#             "wr_data" : '',  
-#             "rd_data1" : '', 
-#             "rd_data2" : ''}
-
-#     def decode(self, curr_instr) :
-#         self.decode["op"] = curr_instr[0:6] #updating control signals
-
-#         self.decode["rs"] = curr_instr[6:11] #readreg 1
-#         self.decode["rt"] = curr_instr[11:16] #readreg 2
-#         self.decode["rd"] = curr_instr[16:21]
-#         self.decode["shamt"] = curr_instr[21:26]
-#         self.decode["fn"] = curr_instr[26:32]
-#         self.decode["imm_val"] = bintodec(curr_instr[16:32]) #immediate value in lw/sw and offset in beq, note it is an integer
-#         self.decode["jump_address"] =bintodec("0000"+curr_instr[6:32]+"00")   #jump address in integer format
-
-#     def updateControl(self):
-#         if self.decoded["op"] == opcodes.RFORMAT or self.decoded["op"] == opcodes.MUL:  
-#             self.Control_Sig["RegDst"] = 1
-#             self.Control_Sig["ALUSrc"] = 0
-#             self.Control_Sig["MemtoReg"] = 0
-#             self.Control_Sig["RegWrite"] = 1
-#             self.Control_Sig["MemRead"] = 0
-#             self.Control_Sig["MemWrite"] = 0
-#             self.Control_Sig["Branch"] = 0
-#             self.Control_Sig["aluop"] = '10'
-#             self.Control_Sig["Jump"] = 0
-        
-#         elif self.decoded["op"] == opcodes.LW:
-#             self.Control_Sig["RegDst"] = 0
-#             self.Control_Sig["ALUSrc"] = 1
-#             self.Control_Sig["MemtoReg"] = 1
-#             self.Control_Sig["RegWrite"] = 1
-#             self.Control_Sig["MemRead"] = 1
-#             self.Control_Sig["MemWrite"] = 0
-#             self.Control_Sig["Branch"] = 0
-#             self.Control_Sig["aluop"] = '00'
-#             self.Control_Sig["Jump"] = 0
-
-#         elif self.decoded["op"] == opcodes.SW:
-
-#             self.Control_Sig["ALUSrc"] = 1
-
-#             self.Control_Sig["RegWrite"] = 0
-#             self.Control_Sig["MemRead"] = 0
-#             self.Control_Sig["MemWrite"] = 1
-#             self.Control_Sig["Branch"] = 0
-#             self.Control_Sig["aluop"] = '00'
-#             self.Control_Sig["Jump"] = 0
-
-#         elif self.decoded["op"] == opcodes.BEQ:
-#             self.Control_Sig["ALUSrc"] = 0
-#             self.Control_Sig["RegWrite"] = 0
-#             self.Control_Sig["MemRead"] = 0
-#             self.Control_Sig["MemWrite"] = 0
-#             self.Control_Sig["Branch"] = 1
-#             self.Control_Sig["aluop"] = '01'
-#             self.Control_Sig["Jump"] = 0
-
-#         elif self.decode["op"] == opcodes.ADDI:
-#             self.Control_Sig["RegDst"] = 0
-#             self.Control_Sig["ALUSrc"] = 1
-#             self.Control_Sig["MemtoReg"] = 0
-#             self.Control_Sig["RegWrite"] = 1
-#             self.Control_Sig["MemRead"] = 0
-#             self.Control_Sig["MemWrite"] = 0
-#             self.Control_Sig["Branch"] = 0
-#             self.Control_Sig["aluop"] = '00'
-#             self.Control_Sig["Jump"] = 0
-
-#         elif self.decoded["op"] == opcodes.J:
-#             self.Control_Sig["RegWrite"] = 0
-#             self.Control_Sig["MemRead"] = 0
-#             self.Control_Sig["MemWrite"] = 0
-#             self.Control_Sig["Jump"] = 1
-        
+def flushEXMEM():
+    EXMEM["Control_Sig"] = {"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
+    EXMEM["pc"] = 0
+    EXMEM["zero"] = 0
+    EXMEM["ALU_res"] = 0
+    EXMEM["rd_data2"] = 0
+    EXMEM["reg_write_data"] = ''
+    EXMEM["jump_address"] = 0

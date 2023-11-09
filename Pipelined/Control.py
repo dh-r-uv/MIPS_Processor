@@ -12,7 +12,6 @@ def updatecontrolUnit(op):    #updating control unit
     "ALUSrc": 0,
     "RegWrite" : 0,
     "Zero" : 0}
-    
     if op == opcodes.RFORMAT or op == opcodes.MUL:  
         Control_Sig["RegDst"] = 1
         Control_Sig["ALUSrc"] = 0
@@ -36,7 +35,7 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
 
     elif op == opcodes.SW:
-
+        #Control_Sig["RegDst"] = 1   #changed 
         Control_Sig["ALUSrc"] = 1
 
         Control_Sig["RegWrite"] = 0

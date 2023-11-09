@@ -36,6 +36,5 @@ def performALU(in1, in2, aluc):
         zero = 1   
     else:
         zero = 0  
-
     return alu_res, zero    
 
