@@ -11,8 +11,6 @@ def updateforwading_sig(rs,rt):
         cntrlA = '10'   #from MEMWB, forwarding
 
 
-    #if(EXMEM["reg_write_data"] == rt and EXMEM["Control_Sig"]["RegWrite"] and EXMEM["reg_write_data"]!=0):
-    #    cntrlB = '10'
     elif(MEMWB["reg_write_data"] == rt and MEMWB["Control_Sig"]["RegWrite"]==1 and MEMWB["reg_write_data"]!='' and (EXMEM["reg_write_data"] != rt or EXMEM["Control_Sig"]['RegWrite'] == 0)or EXMEM["Control_Sig"]["MemtoReg"]):
         cntrlB = '01'  
     if(EXMEM["reg_write_data"] == rt and EXMEM["Control_Sig"]["RegWrite"]==1 and EXMEM["reg_write_data"]!=''):
@@ -32,7 +30,7 @@ def forward_mul(cntrlsig, rd_data):
 
 
 
-#hazard
+#data hazard, handling forwarding
 
 def FOWD():
     fowA, fowB = updateforwading_sig(IDEX["rs"], IDEX["rt"])

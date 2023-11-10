@@ -9,13 +9,13 @@ import opcodes
 
 IFID = {"pc": '', "curr_instr" : ''}
 
-IDEX = {"pc" : '', "Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0},
+IDEX = {"pc" : '', "Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0},
          "rd_data1" : 0, "rd_data2" : 0, "imm_val" : 0, "fn" : '', "rs" : '', "rd" : '', "rt" : 0, "jump_address":0}
 
-EXMEM = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
+EXMEM = {"Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
          "pc" : 0, "zero" : 0, "ALU_res" : 0, "rd_data2" : 0, "reg_write_data" : '', "jump_address":0}
 
-MEMWB = {"Control_Sig":{"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
+MEMWB = {"Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
          "reg_write_data":'', "ALU_res":0, "mem_rd_data":''}
 
 def updateIFID(reg):
@@ -67,7 +67,7 @@ def flushIFID():
     IFID["curr_instr"] = ''
 
 def flushIDEX():
-    IDEX["Control_Sig"] = {"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
+    IDEX["Control_Sig"] = {"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
     IDEX["pc"] = 0
     IDEX["rd_data1"] = 0
     IDEX["rd_data2"] = 0
@@ -79,7 +79,7 @@ def flushIDEX():
     IDEX["jump_address"] = 0
 
 def flushEXMEM():
-    EXMEM["Control_Sig"] = {"PCSrc" : 0, "RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
+    EXMEM["Control_Sig"] = {"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}
     EXMEM["pc"] = 0
     EXMEM["zero"] = 0
     EXMEM["ALU_res"] = 0

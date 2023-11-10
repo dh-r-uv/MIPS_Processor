@@ -35,9 +35,7 @@ def updatecontrolUnit(op):    #updating control unit
         Control_Sig["Jump"] = 0
 
     elif op == opcodes.SW:
-        #Control_Sig["RegDst"] = 1   #changed 
         Control_Sig["ALUSrc"] = 1
-
         Control_Sig["RegWrite"] = 0
         Control_Sig["MemRead"] = 0
         Control_Sig["MemWrite"] = 1
