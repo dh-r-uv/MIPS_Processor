@@ -23,6 +23,7 @@ def Create_Instr_set(pc):
 #implementing it without jump first
 stall = [0, 0, 0, 0] #IFID, IDEX, EXMEM, MEMWB
 instr_over = 0
+hzd = 0
 
 #Instruction Fetch
 def IF(pc):
@@ -56,6 +57,7 @@ def ID():
 
 #Instruction Execute
 def EX():
+    global hzd
     # if(not stall[1]):
     #     stall[2] = 0
     #     return
@@ -68,14 +70,16 @@ def EX():
     aluc = updateAluControl(fn, Cntrl_sig["aluop"]) #updating alucontrol signals
 
     #forwarding   
-    IDEX["rd_data1"] = forward_mul(fowA, IDEX["rd_data1"])
-    IDEX["rd_data2"] = forward_mul(fowB, IDEX["rd_data2"])
+    inp1 = forward_mul(fowA, IDEX["rd_data1"])
+    inp2 = forward_mul(fowB, IDEX["rd_data2"])
 
+    if(fowA or fowB):
+        hzd = 1
 
-    in1 = IDEX["rd_data1"]
+    in1 = inp1
     in2 = 0
     if(Cntrl_sig["ALUSrc"]==0):
-        in2 = IDEX["rd_data2"]
+        in2 = inp2
     else:
         in2 = imm_val
 
@@ -97,7 +101,7 @@ def EX():
         to_jump = 1
     #stall[2] = 1    
     #updateEXMEM([Cntrl_sig, pc, zero, alu_res, IDEX["rd_data2"], reg_write_data, IDEX["jump_address"]])
-    return to_jump, pc, [Cntrl_sig, pc, zero, alu_res, IDEX["rd_data2"], reg_write_data, IDEX["jump_address"]]
+    return to_jump, pc, [Cntrl_sig, pc, zero, alu_res, inp2, reg_write_data, IDEX["jump_address"]]
     #return [Cntrl_sig, pc, zero, alu_res, IDEX["rd_data2"], reg_write_data, IDEX["jump_address"]]
 #Instruction Execute ends
 
@@ -135,6 +139,7 @@ def WB():
 
 
 def pipelined_mips(pc):
+    global hzd
     cycle_count=0
     instr = [None, None, None, None, None]  #instruction queue which does not exceed 
     #0-IF, 1-ID, 2-EX, 3-MEM, 4-WB
@@ -177,8 +182,11 @@ def pipelined_mips(pc):
             elif(i==0):
                 #print("IF")
                 pc, Reg_update[i] = IF(pc) 
-                
+        FOWD()  
         #updating pipelined register
+        if(hzd):
+            hzd = 0
+            FOWD()
         update_pipelined(Reg_update)     
         #hazard detection and resolving
 
