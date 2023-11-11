@@ -13,16 +13,17 @@ from forwarding_hazard import *
 def Create_Instr_set(pc):
     global num_lines, strt_add
     strt_add = pc
-    in_file=open("sorting.txt","r")
+    #in_file=open("sorting_bin.txt","r")
+    in_file = open("Factorial_bin.txt", "r")
     instr_list = in_file.readlines()
     num_lines = len(instr_list)
     for line in instr_list:
-        instr_mem[strt_add] = '0x'+line.rstrip('\n')
+        instr_mem[strt_add] = line.rstrip('\n')
         strt_add+=4
 
 #Instruction Fetch
 def IF(pc):
-    curr_instr = hextobin(instr_mem[pc], 32)
+    curr_instr = instr_mem[pc]
     pc+=4
     return pc, [pc, curr_instr]
 #Instruction Fetch Ends
@@ -112,14 +113,15 @@ def WB():
 
 def pipelined_mips(pc):
     cycle_count=0
-    instr = [None, None, None, None, None]  #0-IF, 1-ID, 2-EX, 3-MEM, 4-WB
-    global st   #maintains if stall is to be done during load dependency
-    st = 0
+    instr = [None, None, None, None, None]  #0-IF, 1-ID, 2-EX, 3-MEM, 4-WBA 
+    st = 0  #maintains if stall is to be done during load dependency
     print("Data Memory is:")
     print(data_mem)
     print("Register Memory is:")
     for key in regmem.keys():
         print(f'{regmem_name[key]} : {regmem[key]}') 
+
+    
     while(True):
         if(st):
             instr.insert(2, None)
@@ -131,7 +133,7 @@ def pipelined_mips(pc):
         if(instr.count(None)==5):   #breaking if everything is none in instr queue
             break
         Reg_update = {} #dictionary that contains the updates that is to be done for each pipelined register after a clock cycle
-
+        
         cycle_count+=1
         
         print(f'Running inst at address : {pc} and clockcyle count: {cycle_count}')
@@ -159,7 +161,6 @@ def pipelined_mips(pc):
                 print("IF", end = " ")
                 pc, Reg_update[i] = IF(pc) 
         print() 
-
         #forwarding the right values into IDEX register depending upon the forwarding control signals       
         FOWD()
         #updating pipelined registers  
@@ -178,9 +179,9 @@ def pipelined_mips(pc):
             pc = pc2    #updating pc
             instr[0] = None #flusing IF and ID
             instr[1] = None
-
         #end
-    print("After executing all instructions:::") 
+    print(f'Time taken by processor assuming each clock cycle is 250ps is {cycle_count*250/1000: .2f} ns')    
+    print("After executing all instructions:") 
     print("Data Memory is:")
     print(data_mem)
     print("Register Memory is:")
