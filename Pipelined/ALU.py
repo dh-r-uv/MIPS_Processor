@@ -23,8 +23,6 @@ def performALU(in1, in2, aluc):
         alu_res = in1 + in2
     elif aluc == '110':  # beq, bne #sub
         alu_res = in1 - in2
-        print(f'sub here {in1} {in2}  {alu_res}')
-
     elif aluc == '011':  #MUL   
         alu_res = in1 * in2 
     elif aluc == '000':  # and
@@ -33,7 +31,6 @@ def performALU(in1, in2, aluc):
         alu_res = in1 | in2
     elif aluc == '111':  # slt
         alu_res = int(in1 < in2) 
-        print(f'slt here {in1}  {in2}')   
 
     if alu_res == 0:   
         zero = 1   

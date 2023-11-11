@@ -5,8 +5,7 @@ import opcodes
 # 2)decoded part#
 # 3)register_file, updated register
 
-
-
+#initialising pipelined regs
 IFID = {"pc": '', "curr_instr" : ''}
 
 IDEX = {"pc" : '', "Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0},
@@ -18,6 +17,7 @@ EXMEM = {"Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"Memt
 MEMWB = {"Control_Sig":{"RegDst" : 0,"Jump" : 0,"Branch" : 0,"MemRead" : 0,"MemtoReg" : 0,"aluop" : '00', "MemWrite" : 0,"ALUSrc": 0,"RegWrite" : 0}, 
          "reg_write_data":'', "ALU_res":0, "mem_rd_data":''}
 
+#updating pipelined registers
 def updateIFID(reg):
     IFID["pc"] = reg[0]
     IFID["curr_instr"] = reg[1]
@@ -61,7 +61,7 @@ def update_pipelined(Reg_update):
     if(3 in Reg_update.keys()):
         updateMEMWB(Reg_update[3])
 
-
+#flushing of pipelined registers
 def flushIFID():
     IFID["pc"] = ''
     IFID["curr_instr"] = ''

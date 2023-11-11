@@ -1,6 +1,8 @@
 from collections import OrderedDict
 import opcodes
 
+
+#setting control signals according to opcodes
 def updatecontrolUnit(op):    #updating control unit
     Control_Sig = {"RegDst" : 0,
     "Jump" : 0,
