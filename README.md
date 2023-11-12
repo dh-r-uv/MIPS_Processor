@@ -1,2 +1,2 @@
 # MIPS_Processor_new
-Implementing mips 
+Gotta make a markdown readme xD
