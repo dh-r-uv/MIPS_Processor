@@ -28,5 +28,14 @@ J = '000010'
 MUL = '011100'
 ```
 
-## Non-Pipelined Processor
 
+## Non-Pipelined Processor:
+
+#### `ALU.py` : contains the ALU part of the processor, that generates ALU control signals and also perfroms ALU operations for the processor.
+#### `Control.py` : Generates Contrl Signals for the instruction during an iteration.
+#### `Resgister_File.py` : Simulates a Register File in a proceesor, performs functions like **WriteBack into register** and performing reading data from the register.
+#### `opcodes.py` : Contains the opcodes of different instructions used in the program, R-type, I-type, J-type.
+#### `main.py` : Reads instructions from a file in the form of a binary string. Performs different stages of MIPS, namely Instruction Fetch(IF), Instruction Decode(ID), Instruction Execute(EX), Memory Access(MEM) and Write Back(WB). Also prints the initial and final state of the memory and Registers.
+#### `converter.py` : contains functions to convert binary to hexadecimal, hexadecimal to binary and binary to hexadecimal.
+#### `Registers.py` : contains a map of binary string to register value and name(the binary string is the binary representation of the register).
+#### `Memory.py` : Hold the Data and Instruction memory of the program.
